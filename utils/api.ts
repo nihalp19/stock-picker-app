@@ -31,5 +31,14 @@ export const searchStocks = async (keyword: string): Promise<Stock[]> => {
   }
 };
 
-
+export const getStockPrices = async (symbol: string, days: number = 30, type: string = 'DAILY'): Promise<StockPrice[]> => {
+  try {
+    const response = await fetch(`${API_BASE}/stock/${symbol}/prices?days=${days}&type=${type}`);
+    if (!response.ok) throw new Error('Price data fetch failed');
+    return await response.json();
+  } catch (error) {
+    console.error('Price fetch error:', error);
+    return [];
+  }
+};
 
