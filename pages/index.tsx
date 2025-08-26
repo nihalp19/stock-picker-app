@@ -13,7 +13,6 @@ export default function Home() {
       const data = await getTickerData();
       setTickerData(data);
     };
-
     fetchTickerData();
   }, []);
 
@@ -28,10 +27,11 @@ export default function Home() {
 
       <div className="min-h-screen bg-gray-50">
         <TickerBar />
-        
+
         <main className="container mx-auto px-4 py-8">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          {/* Header */}
+          <div className="text-center mb-10">
+            <h1 className="text-5xl font-extrabold text-gray-900 mb-4">
               Stock Ticker App
             </h1>
             <p className="text-lg text-gray-600">
@@ -39,23 +39,34 @@ export default function Home() {
             </p>
           </div>
 
+          {/* Search */}
           <div className="flex justify-center mb-12">
             <SearchBar />
           </div>
 
+          {/* Top Movers */}
           {tickerData.length > 0 && (
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h2 className="text-2xl font-semibold mb-4">Top Movers</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {tickerData.slice(0, 6).map((stock) => (
-                  <div key={stock.symbol} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <h3 className="font-bold text-lg">{stock.symbol}</h3>
-                    <p className="text-gray-600">{stock.name}</p>
-                    <div className="mt-2">
-                      <span className="text-xl font-semibold">₹{stock.price.toFixed(2)}</span>
-                      <span className={`ml-2 ${stock.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                        {stock.change >= 0 ? '↑' : '↓'} {Math.abs(stock.change).toFixed(2)} ({stock.changePercent.toFixed(2)}%)
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <h2 className="text-3xl font-semibold mb-6 text-gray-800">Top Movers</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {tickerData.slice(0, 12).map((stock) => (
+                  <div
+                    key={stock.symbol}
+                    className="border rounded-xl p-4 hover:shadow-lg transition-shadow bg-gray-50"
+                  >
+                    <div className="flex justify-between items-center mb-2">
+                      <h3 className="font-bold text-lg text-gray-900">{stock.symbol}</h3>
+                      <span className={`font-semibold ${stock.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        {stock.change >= 0 ? '↑' : '↓'} {stock.change?.toFixed(2)}
                       </span>
+                    </div>
+                    <p className="text-gray-600 mb-2 text-sm">{stock.comp_name}</p>
+                    <div className="flex justify-between items-center text-gray-700 text-sm">
+                      <span>Price: ₹{stock.close?.toFixed(2)}</span>
+                      <span>Change%: {stock.percent?.toFixed(2)}%</span>
+                    </div>
+                    <div className="mt-2 text-gray-500 text-xs">
+                      Volume: {stock.volume?.toLocaleString()}
                     </div>
                   </div>
                 ))}
