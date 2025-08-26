@@ -1,60 +1,35 @@
-import axios from 'axios';
-import { Stock, StockPrice, TickerItem } from '../types';
+import { Stock, StockPrice, TickerData, SearchResult } from '../types';
 
 const API_BASE = 'https://portal.tradebrains.in/api/assignment';
 
-
 export const searchStocks = async (keyword: string): Promise<Stock[]> => {
   try {
-    const response = await axios.get(
-      `${API_BASE}/search?keyword=${encodeURIComponent(keyword)}&length=10`
-    );
+    const response = await fetch(`${API_BASE}/search?keyword=${keyword}&length=10`);
+    if (!response.ok) throw new Error('Search failed');
     
-    // api return here array of object with symbol and name
-    return response.data.map((item: any) => ({
-      symbol: item.symbol,
-      name: item.name,
-    }));
+    const data = await response.json();
+    
+    // Handle different possible response formats
+    if (Array.isArray(data)) {
+      return data; // Direct array response
+    } else if (data && typeof data === 'object') {
+      // Check for common response structures
+      if (Array.isArray(data.stocks)) return data.stocks;
+      if (Array.isArray(data.data)) return data.data;
+      if (Array.isArray(data.results)) return data.results;
+      if (Array.isArray(data.items)) return data.items;
+      
+      // If it's an object but we can't find an array, return empty
+      console.warn('Unexpected API response format:', data);
+      return [];
+    }
+    
+    return []; // Fallback for unexpected formats
   } catch (error) {
-    console.error('Error searching stocks:', error);
+    console.error('Search error:', error);
     return [];
   }
 };
 
-export const fetchStockDetails = async (symbol: string): Promise<Stock | null> => {
-  try {
-    const pricesResponse = await axios.get(
-      `${API_BASE}/stock/${symbol}/prices?days=1&type=INTRADAY&limit=1`
-    );
-    
-    if (!pricesResponse.data || pricesResponse.data.length === 0) {
-      return null;
-    }
-    
-    const priceData = pricesResponse.data[0];
-    
-    const searchResponse = await axios.get(
-      `${API_BASE}/search?keyword=${encodeURIComponent(symbol)}&length=1`
-    );
-    
-    let name = symbol;
-    if (searchResponse.data && searchResponse.data.length > 0) {
-      name = searchResponse.data[0].name;
-    }
-    
-    return {
-      symbol,
-      name,
-      currentPrice: priceData.close || priceData.price,
-      change: priceData.change || 0,
-      volume: priceData.volume || 0,
-      openPrice: priceData.open || 0,
-      highPrice: priceData.high || 0,
-      lowPrice: priceData.low || 0,
-    };
-  } catch (error) {
-    console.error('Error fetching stock details:', error);
-    return null;
-  }
-};
+
 
