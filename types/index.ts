@@ -1,27 +1,39 @@
-// add types because we are working with the external api 
-
 export interface Stock {
-  symbol: string;
-  name: string;
-  currentPrice?: number;
-  change?: number;
-  volume?: number;
-  marketCap?: number;
-  openPrice?: number;
-  highPrice?: number;
-  lowPrice?: number;
-  previousClose?: number;
-  week52High?: number;
-  week52Low?: number;
+    symbol: string;
+    name: string;
+    sector?: string;
+    currentPrice?: number;
+    change?: number;
+    changePercent?: number;
 }
 
 export interface StockPrice {
-  time: string;
-  price: number;
+    timestamp: string;
+    price: number;
+    volume?: number;
 }
 
-export interface TickerItem {
+export interface SearchResult {
+    stocks: Stock[];
+}
+
+export interface TickerData {
   symbol: string;
-  price: number;
-  change: number;
+  name?: string;
+  volume?: number;
+  // Additional properties that might come from the API
+  [key: string]: any;
+}
+
+// Specific interface for the API response
+export interface NiftyMoversResponse {
+  name: string;
+  index_name: string;
+  total_count: number;
+  losers_count: number;
+  gainers_count: number;
+  gainers: TickerData[];
+  losers: TickerData[];
+  exchange: string;
+  volume_movers: TickerData[];
 }

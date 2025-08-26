@@ -57,3 +57,4 @@ export const fetchStockDetails = async (symbol: string): Promise<Stock | null> =
     return null;
   }
 };
+
