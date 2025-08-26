@@ -7,6 +7,7 @@ import StockGraph from '../../components/StockGraph';
 import { getStockPrices, searchStocks } from '../../utils/api';
 import { Stock, StockPrice } from '../../types';
 import Link from 'next/link';
+import { LayoutRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 interface StockDetailProps {
     stock: Stock | null;
@@ -80,7 +81,11 @@ const StockDetail = ({ stock, initialPrices, symbol }: StockDetailProps) => {
         );
     }
 
+
+
     const latestPrice = prices.length > 0 ? prices[prices.length - 1] : null;
+
+    console.log("latest price", latestPrice)
 
     return (
         <>
@@ -118,30 +123,40 @@ const StockDetail = ({ stock, initialPrices, symbol }: StockDetailProps) => {
                     </div>
 
                     {/* Current Price */}
-                    {/* {latestPrice ? (
+                    {latestPrice ? (
                         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
                             <div>
-                                <span className="text-3xl font-bold">₹{latestPrice.close.toFixed(2)}</span>
-                                <span className={`ml-3 font-semibold ${latestPrice.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                    {latestPrice.change >= 0 ? '↑' : '↓'} {Math.abs(latestPrice.change).toFixed(2)} ({latestPrice.percent.toFixed(2)}%)
+                                {/* Current Close Price */}
+                                <span className="text-3xl text-black font-bold">₹{latestPrice.close.toFixed(2)}</span>
+
+                                {/* Price Change Calculation: close - open */}
+                                <span
+                                    className={`ml-3 font-semibold ${latestPrice.close - latestPrice.open >= 0 ? "text-green-600" : "text-red-600"
+                                        }`}
+                                >
+                                    {latestPrice.close - latestPrice.open >= 0 ? "↑" : "↓"}{" "}
+                                    {Math.abs(latestPrice.close - latestPrice.open).toFixed(2)}
                                 </span>
                             </div>
+
+                            {/* Extra Info */}
                             <div className="text-gray-500 text-sm">
-                                Prev Close: ₹{latestPrice.prev_close.toFixed(2)} | Volume: {latestPrice.volume.toLocaleString()}
+                                Open: ₹{latestPrice.open.toFixed(2)} | High: ₹{latestPrice.high.toFixed(2)} | Low: ₹
+                                {latestPrice.low.toFixed(2)} | Volume: {latestPrice.volume.toLocaleString()}
                             </div>
                         </div>
                     ) : (
                         <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 text-center text-gray-500">
                             Price data not available
                         </div>
-                    )} */}
+                    )}
 
 
 
                     {/* Price Chart */}
                     <div className="bg-white rounded-2xl shadow-lg p-6">
                         <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
-                            <h2 className="text-xl font-semibold">Price Chart</h2>
+                            <h2 className="text-xl text-black font-semibold">Price Chart</h2>
                             <div className="flex space-x-2 flex-wrap">
                                 {(['1D', '1W', '1M', '3M'] as const).map(range => (
                                     <button
