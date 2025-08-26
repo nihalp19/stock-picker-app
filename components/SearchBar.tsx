@@ -36,7 +36,6 @@ const SearchBar = () => {
 
         if (abortControllerRef.current) abortControllerRef.current.abort();
         abortControllerRef.current = new AbortController();
-        const { signal } = abortControllerRef.current;
 
         try {
             const stocks = await searchStocks(searchQuery);
@@ -57,7 +56,6 @@ const SearchBar = () => {
     };
 
     const handleSelectStock = (symbol: string) => {
-        console.log("Hi")
         setShowResults(false);
         setQuery('');
         router.push(`/stock/${symbol}`);
@@ -85,10 +83,9 @@ const SearchBar = () => {
                 <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-xl shadow-lg mt-2 z-20 max-h-80 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                     {results.length > 0 ? (
                         results.map((stock) => (
-
                             <div
                                 key={stock.symbol ?? stock.company}
-                                onClick={() => stock.symbol && handleSelectStock(stock.symbol)}
+                                onMouseDown={() => stock.symbol && handleSelectStock(stock.symbol)}
                                 className="flex flex-col p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors"
                             >
                                 <div className="font-semibold text-gray-800">{stock.symbol}</div>
