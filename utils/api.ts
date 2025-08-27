@@ -1,6 +1,6 @@
 import { Stock, StockPrice, TickerData, NiftyMoversResponse } from '../types';
 
-const API_BASE = 'https://portal.tradebrains.in/api/assignment';
+const API_BASE = process.env.STOCK_API;
 
 export const searchStocks = async (keyword: string): Promise<Stock[]> => {
   try {
