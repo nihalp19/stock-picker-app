@@ -1,6 +1,8 @@
 import { Stock, StockPrice, TickerData, NiftyMoversResponse } from '../types';
 
-const API_BASE = process.env.STOCK_API;
+const API_BASE = process.env.NEXT_PUBLIC_STOCK_API;
+
+console.log("APi",API_BASE)
 
 export const searchStocks = async (keyword: string): Promise<Stock[]> => {
   try {
