@@ -1,6 +1,15 @@
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
+// pages/_app.tsx
+import type { AppProps } from 'next/app';
+import LoadingSpinner from '../components/LoadingSpinner';
+import '../styles/globals.css';
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <>
+      <LoadingSpinner />
+      <Component {...pageProps} />
+    </>
+  );
 }
+
+export default MyApp;
