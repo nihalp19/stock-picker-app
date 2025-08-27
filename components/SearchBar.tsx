@@ -52,7 +52,9 @@ const SearchBar = () => {
     };
 
     const handleInputBlur = () => {
-        setTimeout(() => setShowResults(false), 200);
+        setTimeout(() => {
+            setShowResults(false);
+        }, 200);
     };
 
     const handleSelectStock = (symbol: string) => {
