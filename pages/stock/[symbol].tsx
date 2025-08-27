@@ -74,7 +74,9 @@ const StockDetail = ({ stock, initialPrices, symbol }: StockDetailProps) => {
             <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
                 <div className="text-center">
                     <h1 className="text-2xl font-bold text-gray-900">Stock not found</h1>
-                    <p className="text-gray-600 mt-2">The stock symbol "{symbol}" could not be found.</p>
+                    <p className="text-gray-600 mt-2">
+                        The stock symbol &quot;{symbol}&quot; could not be found.
+                    </p>
                     <Link href="/" className="mt-4 inline-block text-blue-600 hover:underline">Go back to home</Link>
                 </div>
             </div>
