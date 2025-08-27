@@ -78,7 +78,7 @@ export const getTickerData = async (): Promise<TickerData[]> => {
       const losers = Array.isArray(data.losers) ? data.losers : [];
       const volumeMovers = Array.isArray(data.volume_movers) ? data.volume_movers : [];
 
-      // Combine all movers into a single array
+      // movers into a single array
       const allMovers = [...gainers, ...losers, ...volumeMovers];
 
       // Remove duplicates based on symbol

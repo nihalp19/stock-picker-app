@@ -163,7 +163,7 @@ const StockDetail = ({ stock, initialPrices, symbol }: StockDetailProps) => {
             <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
               <h2 className="text-xl text-black font-semibold">Price Chart</h2>
               <div className="flex space-x-2 flex-wrap">
-                {(['1D', '1W', '1M', '3M'] as const).map(range => (
+                {(['1D', '1W','1M', '3M'] as const).map(range => (
                   <button
                     key={range}
                     onClick={() => setTimeRange(range)}
